@@ -1,0 +1,94 @@
+{% extends 'record/base.html' %}
+{% load static %}
+{% load imagekit %}
+{% block title %}日付詳細{% endblock %}
+
+{% block content %}
+<h2>{{ target_date }} の詳細</h2>
+
+
+{% if messages %}
+  {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
+
+
+ <section class="card">
+  <h3>日記</h3>
+{% if diary %}
+  <span class="title">☆{{ diary.title }}</span>
+  <p class="diary-content">
+    {% if diary.content %}
+    {{ diary.content|linebreaksbr }}
+    {% endif %}
+  </p>
+
+
+  {% if diary.image %}
+  <img src="{{ diary.image.url }}" alt="日記の画像" style="max-width: 200px;">
+  {% endif %}
+
+
+  <p class="diary-location">
+    {% if diary.location %}
+    場所: {{ diary.location }}
+    {% endif %}
+  </p>
+
+  <p>
+  {% if diary.favorite %}
+    ★ お気に入り
+  {% endif %}
+ </p>
+  <a href="{% url 'diary_update' diary.pk %}?next={{ request.get_full_path|urlencode }}">編集</a>
+  <a href="{% url 'diary_delete' diary.pk %}?next={{ request.get_full_path|urlencode }}">削除</a>
+
+{% else %}
+  <p>この日の日記はありません。</p>
+  <a href="{% url 'input' %}?date={{ target_date|date:'Y-m-d' }}&focus=diary">日記を追加</a>
+{% endif %}
+
+
+
+</section>
+
+<section class="card">
+  <h3 >学習記録</h3>
+  <p>合計学習時間: {{ total_study_time }} 分</p>
+
+  {% if study_records %}
+    <ul>
+      {% for item in study_records %}
+        <li>{{ item.subject }} - {{ item.study_time }}分</li>
+       
+
+     
+      {% endfor %}
+
+          <br>
+       {% if study_record.memo %}
+      <div class="study-memo">
+        [メモ]
+        <br>
+        {{ study_record.memo|linebreaksbr }}
+      </div>
+    {% endif %}
+    </ul>
+  
+    {% if study_record %}
+      <a href="{% url 'studyrecord_update' study_record.pk %}?next={{ request.get_full_path|urlencode }}">編集</a>
+      <a href="{% url 'studyrecord_delete' study_record.pk %}?next={{ request.get_full_path|urlencode }}">この日の学習記録を削除</a>
+      
+    {% endif %}
+
+
+  {% else %}
+    <p>この日の学習記録はありません。</p>
+    <a href="{% url 'input' %}?date={{ target_date|date:'Y-m-d' }}&focus=study">学習記録を追加</a>
+  {% endif %}
+</section>
+
+<a href="{% url 'top' %}">トップページに戻る</a>
+{% endblock %}

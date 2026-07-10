@@ -1,0 +1,27 @@
+{% extends 'record/base.html' %}
+
+{% block title %}新規ユーザー登録{% endblock %}
+
+{% block content %}
+<h2>新規ユーザー登録</h2>
+
+
+
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <label for="">ユーザー名</label>
+  {{form.username}}
+  <label for="">パスワード</label>
+  {{form.password1}}
+  <label for="">確認用のパスワード</label>
+  {{form.password2}}
+
+  <br />
+  <button type="submit" class="signupBtn">登録する</button>
+</form>
+
+
+
+<a href="{% url 'login' %}">ログイン画面に戻る</a>
+{% endblock %}

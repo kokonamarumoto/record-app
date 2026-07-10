@@ -1,0 +1,78 @@
+{% extends 'record/base.html' %}
+{% load static %}
+{% load imagekit %}
+
+{% block title %}学習記録一覧{% endblock %}
+{% block content %}
+
+
+
+<div class="header">
+  <h2>{{request.user}}の学習記録一覧</h2>
+</div>
+
+<form method="get" class="search-form">
+  <input type=" text" name="keyword" placeholder="キーワードで検索" class="searchInput">
+    
+
+    <select name="sort" class="sort-select">
+     <option value="date_desc" {% if request.GET.sort == "date_desc" or not request.GET.sort %}selected{% endif %}>日付順（新しい順）</option>
+      <option value="date_asc" {% if request.GET.sort == "date_asc" %}selected{% endif %}>日付順（古い順）</option>
+      <option value="favorite" {% if request.GET.sort == "favorite" %}selected{% endif %}>お気に入り順</option>
+        <option value="favorite_only" {% if request.GET.sort == "favorite_only" %}selected{% endif %}>お気に入りのみ</option>
+  </select>
+
+ 
+  <button type="submit" class="searchButton">検索</button>
+</form>
+
+
+<a href="{% url 'studyrecord_list' %}">一覧表示する</a>
+
+
+{% if messages %}
+  {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
+
+{% for studyrecord in studyrecords %}
+<article class="card">
+  <div class=" study-card">
+    <div class="study-date">{{ studyrecord.date }}</div>
+     <ul>
+      {% for item in studyrecord.items.all %}
+        <li class="timerecord">{{ item.subject }}：{{ item.study_time }}分</li>
+      {% empty %}
+        <li>カテゴリーの記録はありません</li>
+      {% endfor %}
+    </ul>
+   
+
+
+
+    {% if studyrecord.memo %}
+    <div class="study-memo">[メモ]<br> {{ studyrecord.memo|linebreaksbr }}</div>
+    {% endif %}
+
+    <p>
+  {% if studyrecord.favorite %}
+    ★ お気に入り
+  {% endif %}
+</p>
+
+    <div class="study-actions">
+      <a href="{% url 'studyrecord_update' studyrecord.pk %}">編集</a>
+      <a href="{% url 'studyrecord_delete' studyrecord.pk %}">削除</a>
+
+    </div>
+  </div>
+</article>
+
+{% empty %}
+<p>まだ学習記録がありません。</p>
+
+{% endfor %}
+
+{% endblock content %}

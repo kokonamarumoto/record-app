@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap
+" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'record/style.css' %}">
+  
+</head>
+
+<body>
+
+  <header class="app-header">
+  <button id="toggleBtn" class="menu-button">☰ メニュー</button>
+
+  <aside id="toggleSidebar" class="toggle-sidebar">
+    <h2>メニュー</h2>
+    <ul>
+      
+       <li><a href=" {% url 'top' %}">トップページ</a></li>
+       <li><a href=" {% url 'diary_list' %}">日記一覧</a></li>
+       <li><a href="{% url 'studyrecord_list' %}">学習記録一覧</a></li>
+
+       <li><a href="{% url 'study_memo' %}">学習メモ</a></li>
+
+       <li><a href="{% url 'input' %}">新規記録作成</a></li>
+
+       <li><a href="{% url 'study_dashboard' %}">学習状況</a></li>
+
+       <li><a href="{% url 'diary_album' %}">アルバム</a></li>
+    
+
+      {% if request.user.is_authenticated %}
+
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="logoutBtn">ログアウト</button>
+      </form>
+      {% else %}
+      <a href="{% url 'login' %}"> ログイン</a>
+      <a href="{% url 'signup' %}">新規登録</a>
+      {% endif %}
+
+
+      <button id="closeBtn">メニューを閉じる</button>
+    </ul>
+  </aside>
+</header>
+
+
+  <div class="page-wrapper">
+    <div class="main-content">
+  
+
+
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+  <script src="{% static 'record/menu.js' %}"></script>
+</body>
+
+</html>

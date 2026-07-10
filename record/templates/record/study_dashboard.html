@@ -1,0 +1,64 @@
+{% extends 'record/base.html' %}
+{% load static %}
+``
+{% block title %}学習状況{% endblock %}
+
+{% block content %}
+<h2>{{ request.user }}の学習状況</h2>
+
+
+
+<div class="dashboard-card">
+  <h3>今週の合計学習時間</h3>
+  <p class="total">{{ weekly_total }} 分</p>
+</div>
+
+
+
+<div class="dashboard-card">
+  <h3>今月の合計学習時間</h3>
+  <pclass="total">{{ monthly_total }} 分</pclass=>
+</div>
+
+<div class="dashboard-card">
+  <h3>今年の合計学習時間</h3>
+  <pclass="total">{{ yearly_total }} 分</pclass=>
+</div>
+
+
+
+<div class="dashboard-card">
+  <h3>総学習時間</h3>
+  <pclass="total">{{  all_total }} 分</pclass=>
+</div>
+
+
+<div class="dashboard-card">
+  <h3>科目ごとの学習時間</h3>
+
+  <form method="get" class="form-inline">
+    
+     <label for="period">期間:</label>
+        <select name="period" id="period" class="period">
+         
+         <option value="week" {% if period == 'week' %}selected{% endif %}>1週間</option>
+         <option value="month" {% if period == 'month' %}selected{% endif %}>今月</option>
+         <option value="year" {% if period == 'year' %}selected{% endif %}>今年</option>
+         <option value="all" {% if period == 'all' %}selected{% endif %}>全期間</option>
+        </select>
+    <button type="submit" class="display">表示</button>
+    
+  </form>
+
+  <div id="chart-section" class="chart"
+  style="max-width: 500px; margin-top: 20px;">
+    <canvas id="subjectChart"></canvas>
+  </div>
+
+  {{ subject_labels|json_script:"subject-labels" }}
+  {{ subject_data|json_script:"subject-data" }}
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'record/study_dashboard.js' %}"></script>
+</div>
+{% endblock %}

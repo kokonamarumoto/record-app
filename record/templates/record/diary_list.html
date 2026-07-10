@@ -1,0 +1,85 @@
+{% extends 'record/base.html' %}
+{% load static %}
+{% load imagekit %}
+
+{% block title %}日記一覧{% endblock %}
+
+{% block content %}
+
+
+<div class="header">
+  <h2>{{request.user}}の日記一覧</h2>
+</div>
+
+<form method="get" class="search-form">
+  <input type=" text" name="keyword" placeholder="キーワードで検索" class="searchInput">
+    
+
+    <select name="sort" class="sort-select">
+     <option value="date_desc" {% if request.GET.sort == "date_desc" or not request.GET.sort %}selected{% endif %}>日付順（新しい順）</option>
+  <option value="date_asc" {% if request.GET.sort == "date_asc" %}selected{% endif %}>日付順（古い順）</option>
+  <option value="favorite" {% if request.GET.sort == "favorite" %}selected{% endif %}>お気に入り順</option>
+   <option value="favorite_only" {% if request.GET.sort == "favorite_only" %}selected{% endif %}>お気に入りのみ</option>
+  </select>
+
+    
+  <button type="submit" class="searchButton">検索</button>
+  
+
+</form>
+
+
+
+<a href="{% url 'diary_list' %}">一覧表示する</a>
+<br>
+
+
+{% if messages %}
+  {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
+
+
+{% for diary in diaries %}
+<article class="card">
+  <h3>{{ diary.date }}</h3>
+
+
+  <span class="title">☆{{ diary.title }}</span>
+
+  <p class="diary-content">
+    {% if diary.content %}
+    {{ diary.content|linebreaksbr }}
+    {% endif %}
+  </p>
+
+
+  {% if diary.image %}
+  <img src="{{ diary.image.url }}" alt="日記の画像" style="max-width: 200px;">
+  {% endif %}
+
+
+  <p class="diary-location">
+    {% if diary.location %}
+    場所: {{ diary.location }}
+    {% endif %}
+  </p>
+
+ <p>
+  {% if diary.favorite %}
+    ★ お気に入り
+  {% endif %}
+</p>
+ 
+  <a href="{% url 'diary_update' diary.pk %}">編集</a>
+  <a href="{% url 'diary_delete' diary.pk %}">削除</a>
+</article>
+
+{% empty %}
+<p>まだ日記がありません。</p>
+
+{% endfor %}
+
+{% endblock content %}

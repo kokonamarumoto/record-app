@@ -1,0 +1,19 @@
+{% extends 'record/base.html' %}
+
+{% block title %}学習記録の削除確認{% endblock %}
+
+{% block content %}
+<h2>以下の学習記録を削除しますか？</h2>
+
+
+<p class="again-text">{{object.record.date}}
+  <br>
+   <li class="deleterecord">{{object.subject}} - {{object.study_time}}分</li>
+</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">削除する</button>
+    <a href="{{ request.GET.next|default:request.META.HTTP_REFERER }}">戻る</a>
+</form>
+{% endblock %}

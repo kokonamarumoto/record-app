@@ -1,0 +1,78 @@
+{% extends 'record/base.html' %}
+{% load static %}
+{% load imagekit %}
+
+
+{% block title %}新規記録作成{% endblock %}
+
+{% block content %}
+
+<div class="header">
+  <a href="{% url 'top' %}">トップページへ</a>
+</div>
+
+<div class="inputmain">
+   
+{% if messages %}
+  {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
+
+  
+
+<h1 id="diary-section">日記記録</h1>
+<form method="post" enctype="multipart/form-data" >
+  {% csrf_token %}
+
+
+  {{ diary_form.as_p }}
+  <button type="submit" name="save_diary">日記を保存</button>
+
+ 
+</form>
+
+<br>
+<h1 id="study-section">学習記録</h1>
+<form method="post" >
+  {% csrf_token %}
+  
+  {{ study_form.as_p }}
+
+ <h4>科目内訳</h4>
+   <p>科目1:<br> <input type="text" name="subject1"></p>
+  <p>時間1:<br> <input type="number" name="study_time1" step="5" min="0"> 分</p>
+
+  <p>科目2: <br><input type="text" name="subject2"></p>
+  <p>時間2: <br><input type="number" name="study_time2" step="5" min="0"> 分</p>
+
+  <p>科目3:<br> <input type="text" name="subject3"></p>
+  <p>時間3: <br><input type="number" name="study_time3" step="5" min="0"> 分</p>
+
+  <button type="submit" name="save_study">学習記録を保存</button>
+
+  
+  <br>
+
+</form>
+
+</div>
+
+
+{% if focus == 'diary' %}
+<script>
+  window.onload = function() {
+    document.getElementById('diary-section').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+{% elif focus == 'study' %}
+<script>
+  window.onload = function() {
+    document.getElementById('study-section').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+{% endif %}
+
+
+{% endblock content %}

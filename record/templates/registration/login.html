@@ -1,0 +1,21 @@
+{% extends 'record/base.html' %}
+
+{% block title %}ログイン{% endblock %}
+
+{% block content %}
+<h2 class="logintitle">ログイン</h2>
+
+<div class="loginarea">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="loginBtn">ログイン</button>
+  </form>
+
+  <form action="{% url 'signup' %}" method="post" class="signupBtn">
+    {% csrf_token %}
+    <button type="submit" class="signupBtn">新規登録</button>
+  </form>
+
+</div>
+{% endblock %}

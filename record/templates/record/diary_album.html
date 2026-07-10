@@ -1,0 +1,45 @@
+{% extends 'record/base.html' %}
+
+{% block title %}アルバム{% endblock %}
+
+{% block content %}
+<h2>{{ request.user }}のアルバム</h2>
+
+<div class="album-grid">
+  {% for album in albums %}
+    <div class="album-card {% if album.favorite %}favorite-card{% endif %}">
+      <p>{{ album.date }}</p>
+      <p>{{ album.title }}</p>
+
+
+     {% if album.image %}
+       <img src="{{ album.image.url }}" alt="{{ album.title }}">
+     {% endif %}
+
+
+    
+      <p class="album-location">
+      {% if album.location %}
+        場所：{{ album.location }}
+      {% endif %}
+      </p>
+      
+      <div class="album-favorite">
+          <form action="{% url 'toggle_favorite' album.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="star-button" aria-label="お気に入り切り替え">
+              {% if album.favorite %}
+                ★  
+              {% else %}
+                ☆ 
+              {% endif %}
+            </button>
+          </form>
+        </div>
+
+    </div>
+  {% empty %}
+    <p>写真がまだありません。</p>
+  {% endfor %}
+</div>
+{% endblock %}

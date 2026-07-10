@@ -1,0 +1,22 @@
+{% extends 'record/base.html' %}
+
+{% block title %}日記削除確認{% endblock %}
+
+{% block content %}
+<p>以下の日記を削除しますか？</p>
+
+
+<p class="again-text">{{ object.date }} 
+  <span class="title"> {{ object.title }}</span>
+  
+ <br>
+  {{ object.content }}
+
+</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">削除する</button>
+  <a href="{{ request.GET.next|default:request.META.HTTP_REFERER }}">戻る</a>
+</form>
+{% endblock %}
