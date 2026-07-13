@@ -7,6 +7,8 @@ name = "pypi"
 pillow = "*"
 django-imagekit = "*"
 django = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
