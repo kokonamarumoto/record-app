@@ -168,3 +168,5 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+print("CLOUD NAME =", os.environ.get("CLOUDINARY_CLOUD_NAME"))
